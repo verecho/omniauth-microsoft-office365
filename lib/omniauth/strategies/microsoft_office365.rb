@@ -58,9 +58,9 @@ module OmniAuth
         end
 
       rescue ::OAuth2::Error => e
-        if e.response.status == 404 # User has no avatar...
+        if e.response.status == 404 || e.response.status == 500 # User has no avatar...
           return nil
-        elsif e.code['code'] == 'GetUserPhoto' && e.code['message'].match('not supported')
+        elsif e.code && e.code['code'] == 'GetUserPhoto' && e.code['message'].match('not supported')
           nil
         else
           raise
